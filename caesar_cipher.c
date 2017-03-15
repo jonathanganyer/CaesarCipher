@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <ctype.h>
+
 void caesar(char *plaintext, char *ciphertext, int key, int crypt);
 
 int main(void)
@@ -39,15 +41,19 @@ void caesar(char *plaintext, char *ciphertext, int key, int crypt)
     char alphabet[] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
     while(*(plaintext+i) != '\0')
     {
-        if(crypt==1)
-            new_letter = ((*(plaintext+i)-97)+key)%26;    //'a' begins at 97 decimal, offset to 0.
-        else
-        {
-            new_letter = ((*(plaintext+i)-97)-key)%26;    //'a' begins at 97 decimal, offset to 0.
-            if(new_letter<0)
-                new_letter=new_letter+26;
+        if (isalpha(*(plaintext+i))) {
+            if(crypt==1)
+                new_letter = ((*(plaintext+i)-97)+key)%26;    //'a' begins at 97 decimal, offset to 0.
+            else
+            {
+                new_letter = ((*(plaintext+i)-97)-key)%26;    //'a' begins at 97 decimal, offset to 0.
+                if(new_letter<0)
+                    new_letter=new_letter+26;
+            }
+            *(ciphertext+i)=alphabet[new_letter];
+        } else {
+            *(ciphertext+i)=*(plaintext+i);
         }
-        *(ciphertext+i)=alphabet[new_letter];
         i++;
     }
 
